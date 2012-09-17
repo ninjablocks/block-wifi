@@ -14,7 +14,7 @@
 	
 	var
 		argv = require('optimist').argv
-		, route = require('./lib/routes')
+		, route = require('./routes')
 		, express = require('express')
 		, port = argv.port || 80
 		, app = express()
