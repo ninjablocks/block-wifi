@@ -4,8 +4,6 @@ var
 	path = require('path')
 	, exec = require('child_process').exec
 	, parser = require(__dirname + '/../lib/iwlist-parser')
-	, foundCells = 0
-	, lastCell = undefined
 	, cells = []
 ;
 
