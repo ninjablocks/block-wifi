@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+
+var 
+	path = require('path')
+	, exec = require('child_process').exec
+	, parser = require(__dirname + '/../lib/iwlist-parser')
+	, foundCells = 0
+	, lastCell = undefined
+	, cells = []
+;
+
+/**
+ * Split output lines into array & feed to parser
+ */
+function read(err, stdout, stderr) {
+	
+	if(err) {
+
+		process.stdout.write(JSON.stringify({ error : err }));
+		process.exit(1);
+	}	
+
+	var results = stdout
+		.split('\n')
+		.map(parse)
+	;
+
+	process.stdout.write(JSON.stringify(cells));
+};
+
+/**
+ * Parse matching lines into cells list
+ */
+function parse(line, index, list) {
+
+	parser.map(function(rule) {
+
+		if(line.match(rule.pattern)) {
+
+			rule.handle.call(line, cells);
+		}	
+	});
+};
+
+exec('iwlist scan', { timeout : 30 }, read);
