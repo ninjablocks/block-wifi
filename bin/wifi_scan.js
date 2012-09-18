@@ -1,10 +1,8 @@
-#!/usr/bin/env node
-
 var 
-	path = require('path')
-	, exec = require('child_process').exec
+	exec = require('child_process').exec
 	, parser = require(__dirname + '/../lib/iwlist-parser')
 	, cells = []
+	, opts = { timeout : 100000 }
 ;
 
 /**
@@ -14,8 +12,7 @@ function read(err, stdout, stderr) {
 	
 	if(err) {
 
-		process.stdout.write(JSON.stringify({ error : err }));
-		process.exit(1);
+		return process.send({ 'action' : 'wifiScan', 'error' : err });
 	}	
 
 	stdout
@@ -23,7 +20,7 @@ function read(err, stdout, stderr) {
 		.map(parse)
 	;
 
-	process.stdout.write(JSON.stringify(cells));
+	process.send({ 'action' : 'wifiScan', 'data' : cells });
 };
 
 /**
@@ -40,4 +37,4 @@ function parse(line, index, list) {
 	});
 };
 
-exec('iwlist scan', { timeout : 30 }, read);
+module.exports = function() { exec('iwlist scan', opts, read) };
