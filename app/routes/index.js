@@ -9,11 +9,11 @@
 			, plugin : require('./get-plugin')
 			, index : require('./get-index')
 		}
-		, router = function(app) {
+		, router = function(app, mids) {
 
 			Object.keys(routes).forEach(function(route) {
 		
-				module.exports[route] = routes[route](app);
+				module.exports[route] = routes[route](app, mids);
 			});
 
 			return app;	

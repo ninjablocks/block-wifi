@@ -1,10 +1,9 @@
 ;(function() {
 	
-	module.exports = function(app) {
+	module.exports = function(app, mids) {
 
 		app.get('/plugin', function(req, res, next) {
 
-			// render a plug-it-in page.
 			res.end("Plug it in.");
 		});
 	};
