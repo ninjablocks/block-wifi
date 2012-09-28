@@ -20,7 +20,6 @@
 		, port = argv.port || 80
 		, util = require('util')
 		, app = express()
-		, monitor
 	;
 
 	function exit(reason) {
@@ -29,12 +28,11 @@
 
 			util.format(
 
-				"ERROR: Could not listen on port %s. %s\n"
+				"Exiting: Could not listen on port %s. %s\n"
 				, port
 				, reason
 			)
 		);
-		process.exit(1);
 	};
 
 	/**
@@ -48,6 +46,17 @@
 		}
 		console.log(msg);
 		app.emit(msg.action, msg.data);
+	};
+
+	var monitor = function monitor() {
+
+		monitor.process = fork('./monitor');
+		
+		monitor.process
+			.on('message', message)
+			.on('exit', monitor)
+			.send({ action : "init" })
+		;
 	};
 
 	/**
@@ -64,12 +73,15 @@
 
 			exit("Address in use.");
 		}
+		else {
+
+			process.stderr.write(util.format("Exiting: %s.\n", err));
+		}
+		process.exit(1);
 	});
 
-	monitor = fork('./monitor');
-	monitor.on('message', message);
-	monitor.send({ action : "init" });
-
 	config(app).listen(port);
+
+	monitor();
 
 })();
