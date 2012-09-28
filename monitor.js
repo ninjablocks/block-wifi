@@ -3,29 +3,29 @@ var
 	, opts = { timout : 10000 }
 	, wifiScan = require('./bin/wifi_scan')
 	, deviceCheck = require('./bin/device_check')
+	, writeConfig = require('./bin/write_config')
+	, actions = {
+
+		"wifiScan" : wifiScan
+		, "deviceCheck" : deviceCheck
+		, "writeConfig" : writeConfig
+		, "init" : function() {
+
+			handleMessage({ action : "wifiScan" });
+			handleMessage({ action : "deviceCheck" });
+		}
+	}
 ;
 
 function handleMessage(dat) {
 
 	if(!dat) { return; }
 	
-	if(dat.action == "wifiScan") {
+	var action = dat.action || undefined;
+	if((actions[action]) && typeof (actions[action] == "function")) {
 
-		wifiScan();
-	}
-	else if(dat.action == "deviceCheck") {
-
-		deviceCheck();
-	}
-	else if(dat.action == "configCheck") {
-
-		exec('./bin/config_check', opts, configCheck);
-	}
-	else if (dat.action == "init") {
-
-		handleMessage({ action : "wifiScan" });
-		handleMessage({ action : "deviceCheck" });
-	}
+		actions[action]();
+	}	
 };
 
 process.on('message', handleMessage);
