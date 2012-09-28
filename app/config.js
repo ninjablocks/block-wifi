@@ -15,7 +15,10 @@ module.exports = function(app) {
 
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-		
+	
+	/**
+	 * We can log everything here
+	 */	
 	app.all('*', function(req, res, next) {
 
 		console.log(req.route);
