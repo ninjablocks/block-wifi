@@ -4,6 +4,7 @@ var
 	, route = require('./routes')
 	, events = require('events')
 	, util = require('util')
+	, path = require('path')
 ;
 
 module.exports = function(app) {
@@ -13,6 +14,8 @@ module.exports = function(app) {
 	events.EventEmitter.call(app);
 	util.inherits(events.EventEmitter, app);
 
+	app.set('views', path.resolve(__dirname, '..', 'views'));
+	app.set('view engine', 'ejs');
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
 	

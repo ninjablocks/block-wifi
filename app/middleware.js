@@ -1,40 +1,25 @@
 var 
-	device = undefined
+	device = false
 	, iface = undefined
 	, connected = false
 ;
 
 module.exports = function(app) {
+
+	app.on('deviceCheck', function(dat) {
+
+		if(!dat) { device = false; return; }
+
+		device = true;
+	});
+
+	app.on('ifaceCheck', function(dat) {
+
+		if(!dat) { iface = undefined; return; }
+
+		iface = dat;
+	});
 	
-	app.on('device::up', function(dat) {
-
-		device = dat.device;
-	});
-
-	app.on('device::down', function(dat) {
-
-		device = undefined;
-	});
-
-	app.on('iface::up', function(dat) {
-
-		device = dat.iface;
-	});
-
-	app.on('iface::down', function(dat) {
-
-		device = undefined;
-	});
-	app.on('connection::up', function(dat) {
-
-		connected = true;
-	});
-
-	app.on('connection::down', function(dat) {
-
-		connected = false;
-	});
-
 	var mids = {
 
 		hasDevice : function(req, res, next) {
