@@ -37,4 +37,4 @@ function parse(line, index, list) {
 	});
 };
 
-module.exports = function() { exec('iwlist scan', opts, read) };
+module.exports = function() { cells = []; exec('iwlist scan', opts, read) };
