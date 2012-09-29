@@ -36,7 +36,7 @@
 	};
 
 	/**
-	 * Messages from the monitor proccess
+	 * Messages from the monitor process
 	 */
 	function message(msg) {
 
@@ -44,7 +44,7 @@
 
 			return;
 		}
-		console.log(msg);
+
 		app.emit(msg.action, msg.data);
 	};
 
@@ -59,6 +59,18 @@
 		;
 	};
 
+	/**
+	 * Messages _to_ the monitor process
+	 */
+	app.send = function send(action, data) {
+
+		monitor.process.send({ 
+
+			'action' : action
+			, 'data' : data || null 
+		});
+	};
+	
 	/**
 	 * Exit if we have problems. Upstart should handle restarts.
 	 */
