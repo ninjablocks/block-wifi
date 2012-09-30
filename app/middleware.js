@@ -8,14 +8,22 @@ module.exports = function(app) {
 
 	app.on('deviceCheck', function(dat) {
 
-		if(!dat) { device = false; return; }
+		if((!dat) || ((dat) && dat.error)) { 
+		
+			console.log("System has no device.");
+			device = false; return; 
+		}
 
 		device = true;
 	});
 
 	app.on('ifaceCheck', function(dat) {
 
-		if(!dat) { iface = undefined; return; }
+		if((!dat) || ((dat) && dat.error)) { 
+
+			console.log("System has no interface.");
+			iface = undefined; return; 
+		}
 
 		iface = dat;
 	});
@@ -36,7 +44,7 @@ module.exports = function(app) {
 			}
 			next();
 		}
-		, hasIface : function(req, ers, next) {
+		, hasIface : function(req, res, next) {
 
 			if(!iface) {
 
