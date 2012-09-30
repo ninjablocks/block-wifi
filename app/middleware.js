@@ -10,7 +10,6 @@ module.exports = function(app) {
 
 		if((!dat) || ((dat) && dat.error)) { 
 		
-			console.log("System has no device.");
 			device = false; return; 
 		}
 
@@ -21,7 +20,6 @@ module.exports = function(app) {
 
 		if((!dat) || ((dat) && dat.error)) { 
 
-			console.log("System has no interface.");
 			iface = undefined; return; 
 		}
 
@@ -32,14 +30,8 @@ module.exports = function(app) {
 
 		hasDevice : function(req, res, next) {
 
-			if(!device && !iface) {
+			if(!device) {
 
-				return res.redirect('/plugin');
-			}
-			else if(!iface) {
-
-				// add route to ask for reboot 
-				// possibly faulty hardware, etc
 				return res.redirect('/plugin');
 			}
 			next();
