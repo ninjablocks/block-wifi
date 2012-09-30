@@ -14,10 +14,12 @@ module.exports = function(app) {
 	events.EventEmitter.call(app);
 	util.inherits(events.EventEmitter, app);
 
-	app.set('views', path.resolve(__dirname, '..', 'views'));
 	app.set('view engine', 'ejs');
-	app.use(express.bodyParser());
+	app.set('views', path.resolve(__dirname, '..', 'views'));
+	app.use(express.static(path.resolve(__dirname, '..', 'public')));	
 	app.use(express.methodOverride());
+	app.use(express.bodyParser());
+	app.use(express.favicon());
 	
 	/**
 	 * We can log everything here
