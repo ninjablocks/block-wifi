@@ -4,7 +4,7 @@
 
 		app.get('/plugin', function(req, res, next) {
 
-			res.end("Plug it in.");
+			res.render("plugin");
 		});
 	};
 	
