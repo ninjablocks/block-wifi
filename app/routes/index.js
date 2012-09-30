@@ -4,6 +4,7 @@
 		routes = {
 
 			connected : require('./get-connected')
+			, networks : require('./xhr-networks')
 			, connect : require('./post-connect')
 			, status : require('./get-status')
 			, plugin : require('./get-plugin')
