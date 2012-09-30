@@ -1,6 +1,6 @@
 ;(function() {
 
-	var cells = [];
+	var cells = {};
 	
 	module.exports = function(app) {
 
