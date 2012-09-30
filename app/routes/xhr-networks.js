@@ -12,7 +12,6 @@
 
 				cells[cell.ssid] = cell;
 			});
-			console.log("networks got cells.");
 		});
 
 		app.get('/networks', function(req, res, next) {
