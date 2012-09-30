@@ -4,9 +4,16 @@ var
 	, fs = require('fs')
 	, path = require('path')
 	, util = require('util')
+	, confPath = '/etc/wpa_supplicant.conf'
 	, writeConfig = function(conf) {
 
-		var fd = fs.createWriteStream('/etc/wpa_supplicant.conf');
+		var fd = fs.createWriteStream(confPath);
+
+		fd.on('error', function(err) {
+
+			process.send({ 'action' : 'writeConfig', error : err });
+			fd.end();
+		});
 
 		fd.write("ctrl_interface=/var/run/wpa_supplicant\n");
 		fd.write("network={\n");
@@ -14,7 +21,7 @@ var
 		fd.write(util.format("\tpsk=%s\n", conf.password));
 		fd.end("}\n");
 
-		process.send({ action : 'writeConfig', data : true });
+		process.send({ 'action' : 'writeConfig', data : true });
 	}
 ;
 
