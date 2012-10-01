@@ -1,6 +1,9 @@
 ;(function() {
 
-	var cells = {};
+	var 
+		cells = {}
+		, util = require('util')
+	;
 	
 	module.exports = function(app) {
 
@@ -10,7 +13,7 @@
 
 			dat.forEach(function(cell) {
 
-				cells[cell.ssid] = cell;
+				cells[cell.address] = cell;
 			});
 		});
 
@@ -19,24 +22,32 @@
 			var
 				conf = {
 
-					'ssid' : req.body.ssid
+					'address' : req.body.network
 					, 'password' : req.body.password
 				}
 			;
 
-			if(!cells[conf.ssid]) {
+			if(!cells[conf.address]) {
 
-				return res.end("unknown network.");
+				return res.json({ error : "Unknown Network"});
 			}
 
-			cells[conf.ssid].password = conf.password;
+			cells[conf.address].password = conf.password;
 
 			// request wlan0 cycle
 			app.send('resetWifi', true);
 
 			// request config write-out
-			app.send("writeConfig", cells[conf.ssid]);
+			app.send("writeConfig", cells[conf.address]);
+			process.stdout.write(
 
+				util.format(
+
+					"Writing wpa_supplicant.conf for %s (%s)."
+					, cells[conf.address].ssid || "Unknown Network"
+					, cells[conf.address].encType
+				)
+			);
 			res.render('connected');
 		});
 	};
