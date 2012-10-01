@@ -35,6 +35,10 @@
 		}
 		, error = function() {
 
+			/**
+			 * Oh well, let's try again.
+			 */
+			setTimeout(check, 1000);
 		}
 	;
 
