@@ -18,7 +18,7 @@ var
 		fd.write("ctrl_interface=/var/run/wpa_supplicant\n");
 		fd.write("network={\n");
 		fd.write(util.format("\tssid=\"%s\"\n", conf.ssid));
-		fd.write(util.format("\tpsk=%s\n", conf.password));
+		fd.write(util.format("\tpsk=\"%s\"\n", conf.password));
 		fd.end("}\n");
 
 		process.send({ 'action' : 'writeConfig', data : true });
