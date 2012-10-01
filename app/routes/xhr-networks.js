@@ -1,6 +1,6 @@
 ;(function() {
 
-	var cells = {};
+	var cells = [];
 	
 	module.exports = function(app) {
 
@@ -8,10 +8,7 @@
 			
 			if((typeof dat !== "object") || dat.length < 1) { return; }
 
-			dat.forEach(function(cell) {
-
-				cells[cell.ssid] = cell;
-			});
+			cells = dat;
 		});
 
 		app.get('/networks', function(req, res, next) {
