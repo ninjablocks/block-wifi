@@ -48,7 +48,25 @@
 		e.preventDefault();
 		var dat = $('form').serializeObject();
 
-		console.log(dat);
+		if(dat.network) {
+
+			$.ajax({
+
+				type : 'POST'
+				, url : '/connect'
+				, dataType : 'JSON'
+				, data : dat
+				, success : connected
+				, failure : connect
+			})
+		};
+	};
+
+	var connected = function(dat) {
+
+		if((dat) && !dat.error) {
+
+		}
 	};
 
 	var networks = function() {
@@ -101,13 +119,13 @@
 			else {
 
 				// no networks found.
-				$($('.alert-info')[1]).fadeIn();		
+				$($('.alert-info')[1]).slideDown();		
 			}
 		}
 		else {
 
 			// some error happened.
-			$($('.alert-info')[2]).fadeIn();					
+			$($('.alert-info')[2]).slideDown();					
 		}
 	};
 
