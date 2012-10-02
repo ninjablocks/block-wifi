@@ -13,14 +13,38 @@ var
 
 			process.send({ 'action' : 'writeConfig', error : err });
 			fd.end();
+			return; 
 		});
 
-		fd.write("ctrl_interface=/var/run/wpa_supplicant\n");
-		fd.write("network={\n");
-		fd.write(util.format("\tssid=\"%s\"\n", conf.ssid));
-		fd.write(util.format("\tpsk=\"%s\"\n", conf.password));
-		fd.end("}\n");
+		var write = [
 
+			"ctrl_interface=/var/run/wpa_supplicant"
+		];
+
+		write.push("network={");
+		write.push(util.format("\tssid=\"%s\"", conf.ssid));
+
+		if(conf.encryption) {
+
+			if(conf.auth == "PSK") {
+
+				write.push("\tkey_mgmt=WPA-PSK");
+				write.push("\tproto=" + (conf.encType == "WPA2" ? 
+
+					"WPA2" : "WPA"
+				));
+				write.push("\tpairwise=TKIP");
+				write.push("\tgroup=TKIP");
+				write.push(util.format("\tpsk=\"%s\"", conf.password));
+			}
+		}
+		else {
+
+			write.push("key_mgmt=NONE");
+		}
+
+		write.push("}\n");
+		fd.end(write.join("\n"));
 		process.send({ 'action' : 'writeConfig', data : true });
 	}
 ;
