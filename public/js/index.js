@@ -18,6 +18,7 @@
 				$('#connect').removeClass('disabled').removeAttr('disabled');
 			}
 			else {
+
 				$('#connect').addClass('disabled').attr('disabled', 'disabled');
 			}
 		});
@@ -37,9 +38,17 @@
 
 			if(cells[val].encryption == true) {
 
+				$('#connect').addClass('disabled').attr('disabled', 'disabled');
+
+				// show the password box
 				return $($('div.control-group')[1]).slideDown();
 			}
+			else {
+
+				$('#connect').removeClass('disabled').removeAttr('disabled');
+			}
 		}
+		// hide the password box
 		$($('div.control-group')[1]).slideUp();
 	};
 
@@ -66,6 +75,7 @@
 
 		if((dat) && !dat.error) {
 
+			window.location.href = '/connected';
 		}
 	};
 
