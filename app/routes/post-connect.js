@@ -48,7 +48,8 @@
 					, cells[conf.address].encType
 				)
 			);
-			res.render('connected');
+			
+			res.json({ 'connected' : true });
 		});
 	};
 
