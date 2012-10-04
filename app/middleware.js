@@ -14,6 +14,7 @@ module.exports = function(app) {
 		}
 
 		device = true;
+		app.send('resetWifi', true);
 	});
 
 	app.on('ifaceCheck', function(dat) {
