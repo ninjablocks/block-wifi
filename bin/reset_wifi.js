@@ -3,6 +3,18 @@ var
 	, opts = { timeout : 100000 }
 ;
 
+var entry = function(dat) {
+
+	if(dat == false) {
+
+		exec('sudo killall -q -s SIGHUP wpa_supplicant', opts, done);
+	}
+	else {
+
+		down();
+	}
+};
+
 var error = function(err) {
 
 	process.send({ 'action' : 'resetWifi', 'error' : err });
@@ -34,4 +46,4 @@ var done = function(err, stdout, stderr) {
 	process.send({ 'action' : 'resetWifi', 'data' : true });
 };
 
-module.exports = down;
+module.exports = entry;
