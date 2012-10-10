@@ -27,6 +27,16 @@ module.exports = function(app) {
 		iface = dat;
 	});
 	
+	app.on('writeConfig', function(dat) {
+
+		if((!dat) || ((dat) && dat.error)) {
+
+			return;
+		}
+
+		app.send('syncDisk', true);
+	});
+
 	var mids = {
 
 		hasDevice : function(req, res, next) {
