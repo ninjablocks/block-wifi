@@ -6,6 +6,7 @@ var
 	, ifaceCheck = require('./bin/iface_check')
 	, writeConfig = require('./bin/write_config')
 	, resetWifi = require('./bin/reset_wifi')
+	, syncDisk = require('./bin/sync_disk')
 	, actions = {
 
 		"wifiScan" : wifiScan
