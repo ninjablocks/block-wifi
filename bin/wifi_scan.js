@@ -2,8 +2,14 @@ var
 	exec = require('child_process').exec
 	, parser = require(__dirname + '/../lib/iwlist-parser')
 	, cells = []
+	, retries = 0
 	, opts = { timeout : 100000 }
 ;
+
+function error(err) {
+
+	process.send({ 'action' : 'wifiScan', 'error' : err });	
+};
 
 /**
  * Split output lines into array & feed to parser
@@ -12,7 +18,7 @@ function read(err, stdout, stderr) {
 	
 	if(err) {
 
-		return process.send({ 'action' : 'wifiScan', 'error' : err });
+		return error(err);
 	}	
 
 	stdout
@@ -20,7 +26,24 @@ function read(err, stdout, stderr) {
 		.map(parse)
 	;
 
-	process.send({ 'action' : 'wifiScan', 'data' : cells });
+	if(cells.length == 0) {
+
+
+		if(++retries < 4) {
+
+			return scan();
+		}
+		
+		retries == 0;
+		return error("No networks found.");
+	}
+
+	send();
+};
+
+function send() {
+
+	process.send({ 'action' : 'wifiScan', 'data' : cells });	
 };
 
 /**
@@ -37,4 +60,10 @@ function parse(line, index, list) {
 	});
 };
 
-module.exports = function() { cells = []; exec('iwlist scan', opts, read) };
+function scan() {
+
+	cells = [];
+	exec('iwlist scan', opts, read);
+};
+
+module.exports = scan;
