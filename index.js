@@ -18,6 +18,7 @@
 		, fork = require('child_process').fork
 		, express = require('express')
 		, port = argv.port || 80
+		, path = require('path')
 		, util = require('util')
 		, app = express()
 	;
@@ -50,7 +51,7 @@
 
 	var monitor = function monitor() {
 
-		monitor.process = fork('./monitor');
+		monitor.process = fork(path.resolve(__dirname, 'monitor'));
 		
 		monitor.process
 			.on('message', message)
