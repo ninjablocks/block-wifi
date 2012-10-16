@@ -11,6 +11,17 @@ function error(err) {
 	process.send({ 'action' : 'wifiScan', 'error' : err });	
 };
 
+function delay(fn) {
+
+	return setTimeout(function() {
+
+		if(typeof fn === 'function') {
+
+			fn();
+		}
+	}, 2000);
+};
+
 /**
  * Split output lines into array & feed to parser
  */
@@ -31,10 +42,11 @@ function read(err, stdout, stderr) {
 
 		if(++retries < 4) {
 
-			return scan();
+			return delay(scan);
 		}
 		
 		retries == 0;
+
 		return error("No networks found.");
 	}
 
