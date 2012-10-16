@@ -3,17 +3,21 @@ var
 	, opts = { timout : 10000 }
 	, wifiScan = require('./bin/wifi_scan')
 	, deviceCheck = require('./bin/device_check')
+	, ifaceUp = require('./bin/iface_up')
+	, ifaceDown = require('./bin/iface_down')
 	, ifaceCheck = require('./bin/iface_check')
 	, writeConfig = require('./bin/write_config')
-	, resetWifi = require('./bin/reset_wifi')
+	, restartSupplicant = require('./bin/restart_supplicant')
 	, syncDisk = require('./bin/sync_disk')
 	, actions = {
 
 		"wifiScan" : wifiScan
+		, "ifaceUp" : ifaceUp
+		, "ifaceDown" : ifaceDown
+		, "ifaceCheck" : ifaceCheck
 		, "deviceCheck" : deviceCheck
 		, "writeConfig" : writeConfig
-		, "ifaceCheck" : ifaceCheck
-		, "resetWifi" : resetWifi
+		, "restartSupplicant" : restartSupplicant
 		, "init" : function() {
 
 			deviceCheck();
