@@ -10,7 +10,7 @@ var error = function(err) {
 
 var up = function() { 
 	
-	exec('sudo ifup wlan0', opts, done);
+	exec('sudo ifconfig wlan0 up', opts, done);
 };
 
 var done = function(err, stdout, stderr) {
