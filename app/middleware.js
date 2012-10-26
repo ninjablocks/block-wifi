@@ -2,6 +2,8 @@ var
 	device = false
 	, iface = undefined
 	, connected = false
+	, cycling = false
+	, state
 ;
 
 module.exports = function(app) {
@@ -10,18 +12,22 @@ module.exports = function(app) {
 
 		if((!dat) || ((dat) && dat.error)) { 
 		
-			device = false; return; 
+			return device = false;
+		}
+
+		if(!device) {
+
+			app.send('ifaceUp', true);
 		}
 
 		device = true;
-		app.send('ifaceUp', true);
 	});
 
 	app.on('ifaceCheck', function(dat) {
 
 		if((!dat) || ((dat) && dat.error)) { 
 
-			iface = undefined; return; 
+			return iface = undefined;
 		}
 
 		iface = dat;
@@ -33,8 +39,31 @@ module.exports = function(app) {
 
 			return;
 		}
+		cycling	= true;
+		app.send('syncDisk', true);		
+		app.send('ifaceDown', true);
 
-		app.send('syncDisk', true);
+	});
+
+	app.on('ifaceDown', function(dat) {
+
+		if(!cycling) { return; }
+
+		app.send('ifaceUp', true);
+		state = setTimeout(function() {
+
+			cycling = false;
+		}, 10000);
+
+	});
+
+	app.on('ifaceUp', function(dat) {
+
+		if(!cycling) { return; }
+
+		clearTimeout(state);
+		cycling = false;
+		
 	});
 
 	var mids = {
@@ -60,6 +89,14 @@ module.exports = function(app) {
 			// check for AP association
 			next();
 		}
+		, notCycling : function(req, res, next) {
+
+			if(cycling) {
+
+				return res.redirect('/plugin');
+			}
+			next();
+		}
 	};
 
 	/**
@@ -69,6 +106,7 @@ module.exports = function(app) {
 
 		mids.hasDevice
 		, mids.hasIface 
+		, mids.notCycling
 	];
 
 	mids.online = [ 
