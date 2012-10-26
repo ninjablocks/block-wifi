@@ -63,9 +63,12 @@ module.exports = function(app) {
 
 		clearTimeout(state);
 		cycling = false;
-		
+
 	});
 
+	/**
+	* Could use a refactor
+	*/
 	var mids = {
 
 		hasDevice : function(req, res, next) {
