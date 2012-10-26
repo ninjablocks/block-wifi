@@ -11,7 +11,7 @@ function read(err, stdout, stderr) {
 		return process.send({ 'action' : 'deviceCheck', 'error' : err });
 	}
 
-	var res = { 'action' : 'deviceCheck', data : false };
+	var res = { 'action' : 'deviceCheck', 'data' : false };
 	/**
 	 * Check for 802.11
 	 */
