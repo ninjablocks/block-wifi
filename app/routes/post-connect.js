@@ -5,7 +5,7 @@
 		, util = require('util')
 	;
 	
-	module.exports = function(app) {
+	module.exports = function(app, mids) {
 
 		app.on('wifiScan', function(dat) {
 			
@@ -27,15 +27,14 @@
 				}
 			;
 
+			console.log("Received connect request for cell address %s.", conf.address);
+
 			if(!cells[conf.address]) {
 
 				return res.json({ error : "Unknown Network"});
 			}
 
 			cells[conf.address].password = conf.password;
-
-			// request wlan0 cycle
-			app.send('resetWifi', true);
 
 			// request config write-out
 			app.send("writeConfig", cells[conf.address]);
