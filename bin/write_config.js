@@ -9,8 +9,10 @@ var
 
 		var fd = fs.createWriteStream(confPath);
 
+		console.log("Writing WiFi configuration...");
 		fd.on('error', function(err) {
 
+			console.log("Error writing WiFi configuration.", err);
 			process.send({ 'action' : 'writeConfig', error : err });
 			fd.end();
 			return; 
@@ -45,6 +47,8 @@ var
 
 		write.push("}\n");
 		fd.end(write.join("\n"));
+		console.log("Wrote WiFi configuration.");
+		console.log(write);
 		process.send({ 'action' : 'writeConfig', data : true });
 	}
 ;

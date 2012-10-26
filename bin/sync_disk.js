@@ -7,6 +7,7 @@ function sync(err, stdout, stderr) {
 	
 	if(err) {
 
+		console.log("Error syncing to disk.");
 		return process.send({ 'action' : 'syncDisk', 'error' : err });
 	}
 
@@ -16,8 +17,13 @@ function sync(err, stdout, stderr) {
 	 */
 	setTimeout(function() {
 
+		console.log("Synced to disk.");
 		process.send({ 'action' : 'syncDisk', 'data' : true });
 	}, 1000);
 };
 
-module.exports = function() { exec('sync', opts, sync) }
+module.exports = function() { 
+
+	console.log("Syncing to disk...");
+	exec('sync', opts, sync) 
+};

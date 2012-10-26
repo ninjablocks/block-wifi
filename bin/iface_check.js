@@ -12,6 +12,7 @@ function read(err, stdout, stderr) {
 	
 	if(err) {
 
+		console.log("Error checking interface.", err);
 		return process.send({ 'action' : 'ifaceCheck', 'error' : err });
 	}	
 
@@ -20,6 +21,8 @@ function read(err, stdout, stderr) {
 		.map(parse)
 	;
 
+	console.log("Interface check complete.");
+	console.log(data);
 	process.send({ 'action' : 'ifaceCheck', 'data' : data });
 };
 
@@ -37,4 +40,10 @@ function parse(line, index, list) {
 	});
 };
 
-module.exports = function() { data = {}; exec('iwconfig wlan0', opts, read) };
+module.exports = function() { 
+
+	data = {};
+	console.log("Checking interface...");
+	exec('iwconfig wlan0', opts, read);
+
+};

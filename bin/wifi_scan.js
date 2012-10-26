@@ -8,6 +8,7 @@ var
 
 function error(err) {
 
+	console.log("Error scanning for WiFi networks.", err);
 	process.send({ 'action' : 'wifiScan', 'error' : err });	
 };
 
@@ -42,14 +43,17 @@ function read(err, stdout, stderr) {
 
 		if(++retries < 4) {
 
+			console.log("Retrying WiFi scan...");
 			return delay(scan);
 		}
 		
 		retries == 0;
-
+		console.log("No networks found.");
 		return error("No networks found.");
 	}
-
+	
+	console.log("Scanned WiFi networks.");
+	console.log(cells);
 	send();
 };
 
@@ -75,6 +79,7 @@ function parse(line, index, list) {
 function scan() {
 
 	cells = [];
+	console.log("Scanning for WiFi networks...");
 	exec('iwlist scan', opts, read);
 };
 
