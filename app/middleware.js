@@ -8,6 +8,10 @@ var
 
 module.exports = function(app) {
 
+	/**
+	 * When device comes up, try to bring the
+	 * interface up as well
+	 */
 	app.on('deviceCheck', function(dat) {
 
 		if((!dat) || ((dat) && dat.error)) { 
@@ -33,6 +37,10 @@ module.exports = function(app) {
 		iface = dat;
 	});
 	
+	/**
+	 * When config has been written, sync
+	 * to disc and start an iface cycle
+	 */
 	app.on('writeConfig', function(dat) {
 
 		if((!dat) || ((dat) && dat.error)) {
@@ -45,6 +53,10 @@ module.exports = function(app) {
 
 	});
 
+	/**
+	 * Bring the iface back up if we are
+	 * in the middle of cycling
+	 */
 	app.on('ifaceDown', function(dat) {
 
 		if(!cycling) { return; }
@@ -57,6 +69,9 @@ module.exports = function(app) {
 
 	});
 
+	/**
+	 * Clear the cycle state if applicable
+	 */
 	app.on('ifaceUp', function(dat) {
 
 		if(!cycling) { return; }
