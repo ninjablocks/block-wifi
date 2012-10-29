@@ -26,7 +26,8 @@ module.exports = function(app) {
 	 */	
 	app.all('*', function(req, res, next) {
 
-		console.log(req.route);
+		// console.log(req.route);
+		// ^ too verbose, we'll log in each route.
 		next();
 	});
 
