@@ -27,7 +27,7 @@
 				}
 			;
 
-			console.log("Received connect request for cell address %s.", conf.address);
+			console.log("Client requested connection for cell address %s.", conf.address);
 
 			if(!cells[conf.address]) {
 

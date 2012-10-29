@@ -13,6 +13,8 @@
 
 		app.get('/networks', function(req, res, next) {
 
+			console.log("Client requested network list...");
+			console.log(cells);
 			res.json({ 'networks' : cells });
 		});
 	};
