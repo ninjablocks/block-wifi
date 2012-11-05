@@ -1,6 +1,4 @@
 ;(function() {
-
-	$('#connecting').removeClass('hidden').hide();	
 	
 	var 
 		check = function() {
@@ -57,6 +55,13 @@
 		}
 	;
 
-	$(check);
+	$(function() {
+
+		check();
+		$('#connecting')
+			.removeClass('hidden')
+			.hide()
+		;			
+	});
 
 })();
