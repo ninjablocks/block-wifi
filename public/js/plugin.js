@@ -22,14 +22,20 @@
 					 * Reload and let the app reroute
 					 * us appropriately.
 					 */
-					window.location.href = '/';
+
+					connecting();
+					setTimeout(function() {
+
+						window.location.href = '/';
+
+					 }, 10000);
 				}
 				else {
 
 					/**
 					 * Wait for them to plug it in
 					 */
-					setTimeout(check, 1000);
+					setTimeout(check, 2000);
 				}
 			}
 		}
@@ -38,10 +44,18 @@
 			/**
 			 * Oh well, let's try again.
 			 */
-			setTimeout(check, 1000);
+			setTimeout(check, 2000);
+		}
+		, connecting = function() {
+
+			$('#waiting').fadeOut(200, function() {
+				
+				$('#connecting').fadeIn(200);
+			})
 		}
 	;
 
+	$('#connecting').hide();
 	$(check);
 
 })();
