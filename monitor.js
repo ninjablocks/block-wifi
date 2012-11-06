@@ -13,6 +13,7 @@ var
 
 		"wifiScan" : wifiScan
 		, "ifaceUp" : ifaceUp
+		, "syncDisk" : syncDisk
 		, "ifaceDown" : ifaceDown
 		, "ifaceCheck" : ifaceCheck
 		, "deviceCheck" : deviceCheck
