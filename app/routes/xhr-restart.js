@@ -2,32 +2,9 @@
 	
 	module.exports = function(app) {
 
-		var 
-			restarting = false
-			, restart = function() {
-
-				restarting = true;
-				app.send('syncDisk', true);
-			}
-		;
-
-		app.on('syncDisk', function(dat) {
-
-			if(restarting) {
-
-				/**
-				 * implement auth token here, so we aren't letting
-				 * just anyone issue restart requests to our block
-				 */
-				app.send('restartBlock', { 'token' : undefined });
-				restarting = false;
-			}
-
-		});
-
 		app.get('/restart', function(req, res, next) {
 
-			restart();
+			app.send('restartBlock', true);
 			res.json({ 'restart' : true });
 		});
 	};
