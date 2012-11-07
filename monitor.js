@@ -19,6 +19,7 @@ var
 		, "ifaceCheck" : ifaceCheck
 		, "deviceCheck" : deviceCheck
 		, "writeConfig" : writeConfig
+		, "restartBlock" : restartBlock
 		, "restartSupplicant" : restartSupplicant
 		, "init" : function() {
 
