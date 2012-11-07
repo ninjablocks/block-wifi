@@ -1,16 +1,15 @@
 ;(function() {
 	
-
-	var 
-		restarting = false
-		, restart = function() {
-
-			restarting = true;
-			app.send('syncDisk', true);
-		}
-	;
-
 	module.exports = function(app) {
+
+		var 
+			restarting = false
+			, restart = function() {
+
+				restarting = true;
+				app.send('syncDisk', true);
+			}
+		;
 
 		app.on('syncDisk', function(dat) {
 
