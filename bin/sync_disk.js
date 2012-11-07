@@ -1,6 +1,6 @@
 var 
 	exec = require('child_process').exec
-	, opts = { timeout : 10000 }
+	, opts = { timeout : 20000 }
 ;
 
 function sync(err, stdout, stderr) {
