@@ -1,7 +1,8 @@
 ;(function() {
 	
 	var
-		init = function() {
+		token = ""
+		, init = function() {
 
 			$('button').click(restart);
 			$('#close').removeClass('hidden').hide();
