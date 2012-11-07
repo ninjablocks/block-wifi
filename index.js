@@ -43,6 +43,28 @@
 
 		if(!msg.action || typeof msg.data == 'undefined' || msg.error) {
 
+			var 
+				stack = new Error().stack
+				, error
+			;
+
+			if(msg.error && msg.action) {
+
+				error = util.format(
+					'Unknown monitor action: %s'
+					, msg.action
+				);	
+			}
+			else {
+
+				error = util.format(
+					'Error from monitor: %s'
+					, msg.error || "UNKNOWN"
+				);
+			}
+
+			console.log(error);
+			console.log(stack);
 			return;
 		}
 
