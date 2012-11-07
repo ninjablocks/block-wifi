@@ -48,7 +48,7 @@
 				, error
 			;
 
-			if(msg.error && msg.action) {
+			if(msg.error && msg.error == "unknownAction" && msg.action) {
 
 				error = util.format(
 					'Unknown monitor action: %s'
