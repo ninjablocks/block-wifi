@@ -1,35 +1,26 @@
 var 
 	exec = require('child_process').exec
 	, opts = { timout : 10000 }
-	, wifiScan = require('./bin/wifi_scan')
-	, deviceCheck = require('./bin/device_check')
-	, restartSupplicant = require('./bin/restart_supplicant')
-	, restartBlock = require('./bin/restart_block')
-	, writeConfig = require('./bin/write_config')
-	, ifaceCheck = require('./bin/iface_check')
-	, ifaceDown = require('./bin/iface_down')
-	, syncDisk = require('./bin/sync_disk')
-	, ifaceUp = require('./bin/iface_up')
 	, actions = {
 
-		"wifiScan" : wifiScan
-		, "ifaceUp" : ifaceUp
-		, "syncDisk" : syncDisk
-		, "ifaceDown" : ifaceDown
-		, "ifaceCheck" : ifaceCheck
-		, "deviceCheck" : deviceCheck
-		, "writeConfig" : writeConfig
-		, "restartBlock" : restartBlock
-		, "restartSupplicant" : restartSupplicant
+		"wifiScan" : require('./bin/wifi_scan')
+		, "ifaceUp" : require('./bin/iface_up')
+		, "syncDisk" : require('./bin/sync_disk')
+		, "ifaceDown" : require('./bin/iface_down')
+		, "ifaceCheck" : require('./bin/iface_check')
+		, "deviceCheck" : require('./bin/device_check')
+		, "writeConfig" : require('./bin/write_config')
+		, "restartBlock" : require('./bin/restart_block')
+		, "restartSupplicant" : require('./bin/restart_supplicant')
 		, "init" : function() {
 
-			deviceCheck();
-			ifaceCheck();
-			wifiScan();
+			actions.deviceCheck();
+			actions.ifaceCheck();
+			actions.wifiScan();
 
-			setInterval(deviceCheck, 10000);
-			setInterval(ifaceCheck, 10000);
-			setInterval(wifiScan, 10000);
+			setInterval(actions.deviceCheck, 10000);
+			setInterval(actions.ifaceCheck, 10000);
+			setInterval(actions.wifiScan, 10000);
 		}
 	}
 ;
