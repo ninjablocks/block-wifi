@@ -17,6 +17,7 @@ function read(err, stdout, stderr) {
 		*/
 		if(err.code == 237) {
 
+			console.log('No interface detected.');
 			return process.send({ 'action' : 'ifaceCheck', 'data' : null });
 		}
 		console.log("Error checking interface.", err);
