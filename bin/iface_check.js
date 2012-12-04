@@ -12,6 +12,13 @@ function read(err, stdout, stderr) {
 	
 	if(err) {
 
+		/**
+		* Send no device error as null instead of error, it's expected.
+		*/
+		if(err.code == 237) {
+
+			return process.send({ 'action' : 'ifaceCheck', 'data' : null });
+		}
 		console.log("Error checking interface.", err);
 		return process.send({ 'action' : 'ifaceCheck', 'error' : err });
 	}	
