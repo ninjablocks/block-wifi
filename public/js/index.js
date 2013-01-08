@@ -16,6 +16,11 @@
 			if($(this).val().length > 0) {
 
 				$('#connect').removeClass('disabled').removeAttr('disabled');
+				if(e.keyCode == 13) { // enter key
+
+					$('#connect').trigger('click');
+					return;
+				}
 			}
 			else {
 
