@@ -41,7 +41,7 @@
 		console.log(cells);
 		if(val !== "null" && cells[val]) {
 
-			if(cells[val].encryption == true) {
+			if(cells[val].encryption == true && cells[val].encType) {
 
 				$('#connect').addClass('disabled').attr('disabled', 'disabled');
 
