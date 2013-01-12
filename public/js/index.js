@@ -1,21 +1,21 @@
 ;(function() {
 	
-	var cells = {};
+	var cells = { };
 
 	var init = function() {
 
 		$('#rescan').click(function() { window.location.href = '/'; });
 		$('#connect').click(connect);
-		$('.alert, div.control-group.hidden').hide().removeClass('hidden');
+		$('.alert, div.control-group.hidden, #ssid').hide().removeClass('hidden');
+		$($('div.control-group')[3]).slideDown(200);
 		$('select').on('change', choice);
-
 		$('#password').keyup(function(e) {
 
 			e.preventDefault();
 
 			if($(this).val().length > 0) {
 
-				$('#connect').removeClass('disabled').removeAttr('disabled');
+				connectable(true);
 				if(e.keyCode == 13) { // enter key
 
 					$('#connect').trigger('click');
@@ -24,9 +24,11 @@
 			}
 			else {
 
-				$('#connect').addClass('disabled').attr('disabled', 'disabled');
+				connectable(false);
 			}
 		});
+
+		$('#hidden').click(hidden);
 		// scanning for wifi alert
 		$($('.alert-info')[0]).fadeIn();
 
@@ -36,25 +38,58 @@
 	var choice = function(e) {
 
 		e.preventDefault();
-		var val = $(this).val();
-		console.log(val);
-		console.log(cells);
-		if(val !== "null" && cells[val]) {
+		
+		var 
+			id = $(this).attr('id')
+			, val = $(this).val()
+			, networkChoice = function() {
 
-			if(cells[val].encryption == true && cells[val].encType) {
+				if(val !== 'null' && cells[val]) {
 
-				$('#connect').addClass('disabled').attr('disabled', 'disabled');
+					if(cells[val].encryption == true && cells[val].encType) {
 
-				// show the password box
-				return $($('div.control-group')[1]).slideDown();
+						connectable(false);
+						return secured(true);
+					}
+					else {
+
+						connectable(true);
+					}
+				}
+				if(val == null) { 
+
+					connectable(false)
+				}
+				secured(false);				
 			}
-			else {
+			, securityChoice = function() {
 
-				$('#connect').removeClass('disabled').removeAttr('disabled');
+				if(val == 'null') {
+
+					connectable(false);
+					secured(false);
+				} 
+				else if(val == 'WEP' || val.substr(0, 3) == "WPA") {
+
+					connectable(false);
+					secured(true);
+				}
+				else if(val == "NONE") {
+
+					connectable(true);
+					secured(false);
+				}
 			}
+		;
+
+		if(id == "networks") {
+
+			networkChoice();
 		}
-		// hide the password box
-		$($('div.control-group')[1]).slideUp();
+		else if(id == "security") {
+
+			securityChoice();
+		}
 	};
 
 	var connect = function(e) {
@@ -142,6 +177,73 @@
 			// some error happened.
 			$($('.alert-info')[2]).slideDown();					
 		}
+	};
+
+	var hidden = function(e) {
+
+		var elements = [
+
+			$('#networks')
+			, $('#ssid')
+		];
+
+		if(!$(this).is(':checked')) {
+
+			elements.unshift(elements.pop());
+			$('#networks').trigger('change');
+			manual(false);
+		}
+		else{
+
+			connectable(false);
+			secured(false);
+			manual(true);
+		}
+
+		// prevent double-clicks from desyncing checkbox
+		if(!elements[0].is(':visible') || elements[1].is(':visible')) { 
+
+			e.preventDefault(); 
+			return false; 
+		}
+
+		elements[0].stop(true, true).fadeOut(200, function() {
+
+			elements[1].stop(true, true).fadeIn(200);
+		});
+	};
+
+	var connectable = function(bool) {
+
+		if(!bool) {
+
+			$('#connect').addClass('disabled').attr('disabled', 'disabled');
+			return;
+		}
+		$('#connect').removeClass('disabled').removeAttr('disabled');
+	};
+
+	var secured = function(bool) {
+
+		if(!bool) {
+
+			$($('div.control-group')[1]).slideUp(200);	
+			return;		
+		}
+		$($('div.control-group')[1]).slideDown(200);
+		$('#password').val('');
+	};
+
+	var manual = function(bool) {
+
+		if(!bool) {
+
+			$($('div.control-group')[2]).slideUp(200);
+			$('#networks').val('null');			
+			return;
+		}
+		$($('div.control-group')[2]).slideDown(200);
+		$('#security').val('null');
 	};
 
 	$(init);	
