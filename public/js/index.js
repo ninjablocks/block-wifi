@@ -128,6 +128,7 @@
 			, dataType : 'JSON'
 			, success : function(dat) { setTimeout(function() { networkList(dat) }, 2000); }
 			, failure : networks
+			, cache : false
 		})
 	};
 
