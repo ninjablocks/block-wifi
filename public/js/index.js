@@ -33,6 +33,10 @@
 		$($('.alert-info')[0]).fadeIn();
 
 		networks();
+		manual(false);
+		secured(false);
+		connectable(false);
+		$('#hidden').removeAttr('checked');
 	};
 
 	var choice = function(e) {
