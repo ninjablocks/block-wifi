@@ -37,10 +37,16 @@ var
 				));
 				write.push(util.format("\tpsk=\"%s\"", conf.password));
 			}
+			else if(conf.auth == "WEP") {
+
+				write.push("\tkey_mgmt=NONE");
+				write.push("\twep_tx_keyidx=0");
+				write.push(util.format("\twep_key0=%s", conf.password));
+			}
 		}
 		else {
 
-			write.push("key_mgmt=NONE");
+			write.push("\tkey_mgmt=NONE");
 		}
 
 		write.push("}\n");
