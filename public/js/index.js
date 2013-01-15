@@ -97,7 +97,21 @@
 		e.preventDefault();
 		var dat = $('form').serializeObject();
 
-		if(dat.network) {
+		if(!dat.ssid) { // drop-down network choice
+
+			delete dat.ssid;
+			delete dat.security;
+		}
+		else { // non-broadcast (manual) network
+
+			delete dat.network;
+			if(dat.security === "NONE") {
+
+				delete dat.password;
+			}
+		}
+
+		if(dat.network || dat.ssid) {
 
 			$.ajax({
 
@@ -126,7 +140,10 @@
 			type : 'GET'
 			, url : '/networks'
 			, dataType : 'JSON'
-			, success : function(dat) { setTimeout(function() { networkList(dat) }, 2000); }
+			, success : function(dat) { 
+
+				setTimeout(function() { networkList(dat) }, 2000); 
+			}
 			, failure : networks
 			, cache : false
 		})
@@ -226,21 +243,23 @@
 
 	var secured = function(bool) {
 
+		$('#password').val('');
 		if(!bool) {
 
 			$($('div.control-group')[1]).slideUp(200);	
 			return;		
 		}
 		$($('div.control-group')[1]).slideDown(200);
-		$('#password').val('');
 	};
 
 	var manual = function(bool) {
 
+		$('#password').val('');		
 		if(!bool) {
 
 			$($('div.control-group')[2]).slideUp(200);
-			$('#networks').val('null');			
+			$('#networks').val('null');	
+			$('#ssid').val('');
 			return;
 		}
 		$($('div.control-group')[2]).slideDown(200);
