@@ -52,7 +52,6 @@ var
 		write.push("}\n");
 		fd.end(write.join("\n"));
 		console.log("Wrote WiFi configuration.");
-		console.log(write);
 		process.send({ 'action' : 'writeConfig', data : true });
 	}
 ;
