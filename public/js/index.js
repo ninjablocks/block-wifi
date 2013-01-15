@@ -170,7 +170,10 @@
 			;
 
 			// save each network in cell list
-			dat.networks.forEach(function(cell) { cells[cell.address] = cell; });
+			dat.networks.forEach(function(cell) { 
+				
+				cells[cell.address] = cell; 
+			});
 
 			select.html('');
 
@@ -181,7 +184,10 @@
 					select.append(option);
 				});
 
-				select.prepend($('<option>').attr('value', 'null').html('&nbsp;'));
+				select.prepend(
+
+					$('<option>').attr('value', 'null').html('&nbsp;')
+				);
 				$($('.control-group')[0]).slideDown();
 			}
 			else {
