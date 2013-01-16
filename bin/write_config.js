@@ -26,23 +26,21 @@ var
 		write.push("network={");
 		write.push(util.format("\tssid=\"%s\"", conf.ssid));
 
-		if(conf.encryption) {
+		if(conf.encryption && conf.auth == "PSK") {
 
-			if(conf.auth == "PSK") {
 
-				write.push("\tkey_mgmt=WPA-PSK");
-				write.push("\tproto=" + (conf.encType == "WPA2" ? 
+			write.push("\tkey_mgmt=WPA-PSK");
+			write.push("\tproto=" + (conf.encType == "WPA2" ? 
 
-					"WPA2" : "WPA"
-				));
-				write.push(util.format("\tpsk=\"%s\"", conf.password));
-			}
-			else if(conf.auth == "WEP") {
+				"WPA2" : "WPA"
+			));
+			write.push(util.format("\tpsk=\"%s\"", conf.password));
+		}
+		else if((conf.auth == "WEP") || (conf.encryption && !conf.auth)) {
 
-				write.push("\tkey_mgmt=NONE");
-				write.push("\twep_tx_keyidx=0");
-				write.push(util.format("\twep_key0=%s", conf.password));
-			}
+			write.push("\tkey_mgmt=NONE");
+			write.push("\twep_tx_keyidx=0");
+			write.push(util.format("\twep_key0=%s", conf.password));
 		}
 		else {
 
