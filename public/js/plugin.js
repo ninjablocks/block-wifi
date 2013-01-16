@@ -17,7 +17,7 @@
 
 			if((dat)) {
 
-				if(dat.device) {
+				if(dat.device && dev.iface) {
 
 					/**
 					 * Reload and let the app reroute
