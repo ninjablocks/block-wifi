@@ -50,7 +50,7 @@
 
 				if(val !== 'null' && cells[val]) {
 
-					if(cells[val].encryption == true && cells[val].encType) {
+					if(cells[val].encryption == true) {
 
 						connectable(false);
 						return secured(true);
