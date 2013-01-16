@@ -49,9 +49,14 @@ var
 			write.push("\tkey_mgmt=NONE");
 		}
 
+		if(conf.hidden) {
+
+			write.push("\tscan_ssid=1");
+		}
 		write.push("}\n");
 		fd.end(write.join("\n"));
-		console.log("Wrote WiFi configuration.");
+
+		console.log("Finished writing WiFi configuration.");
 		process.send({ 'action' : 'writeConfig', data : true });
 	}
 ;
