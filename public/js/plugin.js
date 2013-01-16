@@ -10,6 +10,7 @@
 				, dataType : "JSON"
 				, success : connected
 				, failure : error
+				, cache : false
 			})
 		}
 		, connected = function(dat) {
