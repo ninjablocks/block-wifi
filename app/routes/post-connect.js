@@ -54,6 +54,7 @@
 					params.auth = null;
 					params.encryption = false;
 				}
+				params.hidden = true;
 			}
 			else if(params.network) { // pre-scanned
 
@@ -77,17 +78,17 @@
 			}
 
 			delete params.network; 
-			app.send("writeConfig", params);
-			process.stdout.write(
+			
+			console.log(
 
 				util.format(
 
-					"Writing wpa_supplicant.conf for %s (%s)."
+					"Requesting wpa_supplicant config for %s (%s)."
 					, params.ssid || "Unknown Network"
-					, params.encType
+					, params.encType || "OPEN"
 				)
 			);
-			
+			app.send("writeConfig", params);
 			res.json({ 'connected' : true });
 		});
 	};
@@ -96,5 +97,5 @@
 
 		res.json({ "error" : err || "Unknown error" });
 	};
-	
+
 })();
