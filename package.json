@@ -1,11 +1,8 @@
 {
   "name": "ninja-wifi",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Ninja Blocks WiFi Utility",
   "main": "index.js",
-  "scripts": {
-    "test": ""
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/ninjablocks/wifi.git"
@@ -19,7 +16,8 @@
   "license": "MIT",
   "dependencies": {
     "optimist": "~0.3.4",
-    "express": "~3.0.0rc4",
-    "ejs": "~0.8.3"
+    "express": "~3.0.6",
+    "ejs": "~0.8.3",
+    "colors": "~0.6.0-1"
   }
 }
