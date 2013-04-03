@@ -4,7 +4,7 @@
 
 		app.get('/', mids.ready, function(req, res, next) {
 
-			console.log("Rendering index screen.");
+			app.log.info("Rendering index screen.");
 			res.render("index");
 
 		});
