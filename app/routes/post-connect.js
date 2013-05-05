@@ -1,98 +1,94 @@
-;(function() {
+var 
+	cells = {}
+	, util = require('util')
+;
 
-	var 
-		cells = {}
-		, util = require('util')
-	;
-	
-	module.exports = function(app, mids) {
+module.exports = function(app, mids) {
 
-		app.on('wifiScan', function(dat) {
-			
-			if((typeof dat !== "object") || dat.length < 1) { return; }
+	app.on('wifiScan', function(dat) {
+		
+		if((typeof dat !== "object") || dat.length < 1) { return; }
 
-			dat.forEach(function(cell) {
+		dat.forEach(function(cell) {
 
-				cells[cell.address] = cell;
-			});
+			cells[cell.address] = cell;
 		});
+	});
 
-		app.post('/connect', function(req, res, next) {
-			
-			if(!req.body) { return error(res, "Invalid request"); }
+	app.post('/connect', function(req, res, next) {
+		
+		if(!req.body) { return error(res, "Invalid request"); }
 
-			var 
-				params = { 
+		var 
+			params = { 
 
-					ssid : req.body.ssid || undefined
-					, network : req.body.network || undefined
-					, password : req.body.password || undefined
-					, security : req.body.security || null
-				}
-			;
-
-			if(params.ssid && params.ssid.length > 0) { // non-broadcast
-
-				app.log.info("Client submitting non-broadcast network...");
-				if(!params.security) {
-
-					return error(res, "Invalid parameters");
-				}
-				if(!params.password && params.security !== "NONE") {
-
-					return error(res, "Invalid password");
-				}
-
-				if(params.password) {
-
-					params.auth = (params.security == "WEP") ? "WEP" : "PSK";
-					params.encType = params.security;
-					params.encryption = true;
-				}
-				else {
-
-					params.auth = null;
-					params.encryption = false;
-				}
-				params.hidden = true;
+				ssid : req.body.ssid || undefined
+				, network : req.body.network || undefined
+				, password : req.body.password || undefined
+				, security : req.body.security || null
 			}
-			else if(params.network) { // pre-scanned
+		;
 
-				var record = cells[params.network] || undefined;
+		if(params.ssid && params.ssid.length > 0) { // non-broadcast
 
-				app.log.info("Client submitting pre-scanned network...");
-				if(!record) { return error(res, "Network not found"); }
+			app.log.info("Client submitting non-broadcast network...");
+			if(!params.security) {
 
-				if(params.password && record.encryption) {
+				return error(res, "Invalid parameters");
+			}
+			if(!params.password && params.security !== "NONE") {
 
-					params.auth = record.auth;
-					params.encryption = true;
-				}
-				else {
-
-					params.encryption = false;
-					delete params.password;
-				}
-				params.ssid = record.ssid;
-				params.encType = record.encType;
+				return error(res, "Invalid password");
 			}
 
-			delete params.network; 
-			
-			app.log.info(
+			if(params.password) {
 
-				"Requesting wpa_supplicant config for %s (%s)."
-				, params.ssid || "Unknown Network"
-				, params.encType || "OPEN"
-			);
-			app.send("writeConfig", params);
-			res.json({ 'connected' : true });
-		});
-	};
+				params.auth = (params.security == "WEP") ? "WEP" : "PSK";
+				params.encType = params.security;
+				params.encryption = true;
+			}
+			else {
 
-	function error(res, err) {
+				params.auth = null;
+				params.encryption = false;
+			}
+			params.hidden = true;
+		}
+		else if(params.network) { // pre-scanned
 
-		res.json({ "error" : err || "Unknown error" });
-	};
+			var record = cells[params.network] || undefined;
 
-})();
+			app.log.info("Client submitting pre-scanned network...");
+			if(!record) { return error(res, "Network not found"); }
+
+			if(params.password && record.encryption) {
+
+				params.auth = record.auth;
+				params.encryption = true;
+			}
+			else {
+
+				params.encryption = false;
+				delete params.password;
+			}
+			params.ssid = record.ssid;
+			params.encType = record.encType;
+		}
+
+		delete params.network; 
+		
+		app.log.info(
+
+			"Requesting wpa_supplicant config for %s (%s)."
+			, params.ssid || "Unknown Network"
+			, params.encType || "OPEN"
+		);
+		app.send("writeConfig", params);
+		res.json({ 'connected' : true });
+	});
+};
+
+function error(res, err) {
+
+	res.json({ "error" : err || "Unknown error" });
+};

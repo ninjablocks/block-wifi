@@ -1,26 +1,22 @@
-;(function() {
+var cells = [];
 
-	var cells = [];
-	
-	module.exports = function(app) {
+module.exports = function(app) {
 
-		app.on('wifiScan', function(dat) {
-			
-			if((typeof dat !== "object") || dat.length < 1) { return; }
+	app.on('wifiScan', function(dat) {
+		
+		if((typeof dat !== "object") || dat.length < 1) { return; }
 
-			cells = dat;
-		});
+		cells = dat;
+	});
 
-		app.get('/networks', function(req, res, next) {
+	app.get('/networks', function(req, res, next) {
 
-			app.send('wifiScan', true);
-			app.log.info("Client requested network list...");
-			console.log(cells);
-			setTimeout(function() {
+		app.send('wifiScan', true);
+		app.log.info("Client requested network list...");
+		console.log(cells);
+		setTimeout(function() {
 
-				res.json({ 'networks' : cells });
-			}, 4000);
-		});
-	};
-
-})();
+			res.json({ 'networks' : cells });
+		}, 4000);
+	});
+};

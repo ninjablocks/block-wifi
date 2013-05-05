@@ -1,12 +1,8 @@
-;(function() {
-	
-	module.exports = function(app, mids) {
+module.exports = function(app, mids) {
 
-		app.get('/plugin', function(req, res, next) {
+	app.get('/plugin', function(req, res, next) {
 
-			app.log.info("Rendering plugin screen.");
-			res.render("plugin");
-		});
-	};
-	
-})();
+		app.log.info("Rendering plugin screen.");
+		res.render("plugin");
+	});
+};
