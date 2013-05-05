@@ -1,4 +1,4 @@
-var 
+var
 	exec = require('child_process').exec
 	, parser = require(__dirname + '/../lib/iwconfig-parser')
 	, data = {}
@@ -9,7 +9,7 @@ var
  * Split output lines into array & feed to parser
  */
 function read(err, stdout, stderr) {
-	
+
 	if(err) {
 
 		/**
@@ -22,7 +22,7 @@ function read(err, stdout, stderr) {
 		}
 		console.log("Error checking interface.", err);
 		return process.send({ 'action' : 'ifaceCheck', 'error' : err });
-	}	
+	}
 
 	stdout
 		.split('\n')
@@ -30,7 +30,6 @@ function read(err, stdout, stderr) {
 	;
 
 	console.log("Interface check complete.");
-	console.log(data);
 	process.send({ 'action' : 'ifaceCheck', 'data' : data });
 };
 
@@ -44,14 +43,14 @@ function parse(line, index, list) {
 		if(line.match(rule.pattern)) {
 
 			rule.handle.call(line, data);
-		}	
+		}
 	});
 };
 
-module.exports = function() { 
+module.exports = function() {
 
 	data = {};
 	console.log("Checking interface...");
-	exec('iwconfig wlan0', opts, read);
+	exec('iwconfig', opts, read);
 
 };
