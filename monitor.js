@@ -1,4 +1,4 @@
-var 
+var
 	exec = require('child_process').exec
 	, opts = { timout : 10000 }
 	, actions = {
@@ -23,7 +23,7 @@ var
 function handleMessage(dat) {
 
 	if(!dat) { return; }
-	
+
 	var action = dat.action || undefined;
 	if((actions[action]) && typeof actions[action] == "function") {
 
@@ -35,4 +35,16 @@ function handleMessage(dat) {
 	}
 };
 
-process.on('message', handleMessage);
+function handleError(err) {
+
+	if(err == "channel closed") { // possible permissions error
+
+		return;
+	}
+
+};
+
+process
+	.on('message', handleMessage)
+	.on('error', handleError)
+;
