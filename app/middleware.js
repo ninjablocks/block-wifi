@@ -1,4 +1,4 @@
-var 
+var
 	device = false
 	, iface = undefined
 	, connected = false
@@ -15,14 +15,14 @@ module.exports = function(app) {
 	 */
 	app.on('deviceCheck', function(dat) {
 
-		if((!dat) || ((dat) && dat.error)) { 
-		
+		if((!dat) || ((dat) && dat.error)) {
+
 			return device = false;
 		}
 
 		if(!device) {
 
-			app.send('ifaceUp', true);
+			app.send('ifaceCheck', true);
 		}
 
 		device = true;
@@ -30,14 +30,16 @@ module.exports = function(app) {
 
 	app.on('ifaceCheck', function(dat) {
 
-		if((!dat) || ((dat) && dat.error)) { 
+		if((!dat) || ((dat) && dat.error)) {
 
 			return iface = undefined;
 		}
 
+		app.send('ifaceUp', dat.iface);
+
 		iface = dat;
 	});
-	
+
 	/**
 	 * When config has been written, sync
 	 * to disc and start an iface cycle
@@ -49,8 +51,8 @@ module.exports = function(app) {
 			return;
 		}
 		cycling	= true;
-		app.send('syncDisk', true);		
-		app.send('ifaceDown', true);
+		app.send('syncDisk', true);
+		app.send('ifaceDown', iface.iface);
 
 	});
 
@@ -62,7 +64,7 @@ module.exports = function(app) {
 
 		if(!cycling) { return; }
 
-		app.send('ifaceUp', true);
+		app.send('ifaceUp', iface.iface);
 		state = setTimeout(function() {
 
 			cycling = false;
@@ -71,14 +73,14 @@ module.exports = function(app) {
 	});
 
 	/**
-	 * Scan for networks when the iface 
-	 * comes up. 
+	 * Scan for networks when the iface
+	 * comes up.
 	 */
 	 app.on('ifaceUp', function(dat) {
 
  		app.send('wifiScan', true);
 	 });
-	 
+
 	/**
 	 * Clear the cycle state if applicable
 	 */
@@ -138,7 +140,7 @@ module.exports = function(app) {
 			if((req.session) && req.session.block) { // session already checked
 
 				if(req.session.block == wifi.serial) {
-					
+
 					wifi.log.debug("User has proper credentials in session");
 					return next();
 				}
@@ -162,22 +164,22 @@ module.exports = function(app) {
 	/**
 	 * Convenience wrappers
 	 */
-	mids.ready = [ 
-
-		mids.hasSerial
-		, mids.userAuth
-		, mids.hasDevice
-		, mids.hasIface 
-		, mids.notCycling
-	];
-
-	mids.online = [ 
+	mids.ready = [
 
 		mids.hasSerial
 		, mids.userAuth
 		, mids.hasDevice
 		, mids.hasIface
-		, mids.isConnected 
+		, mids.notCycling
+	];
+
+	mids.online = [
+
+		mids.hasSerial
+		, mids.userAuth
+		, mids.hasDevice
+		, mids.hasIface
+		, mids.isConnected
 	];
 
 	return mids;
