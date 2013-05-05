@@ -1,28 +1,28 @@
-var 
+var
 	exec = require('child_process').exec
 	, opts = { timeout : 100000 }
 ;
 
 var error = function(err) {
-	
-	console.log("Error bringing interface wlan0 up.", err);
+
+	console.log("Error bringing interface up.", err);
 	process.send({ 'action' : 'ifaceUp', 'error' : err });
 };
 
-var up = function() { 
-	
-	console.log("Bringing interface wlan0 up...");
-	exec('sudo ifconfig wlan0 up', opts, done);
+var up = function(iface) {
+
+	console.log("Bringing interface %s up...", iface);
+	exec('sudo ifconfig ' + iface + ' up', opts, done);
 };
 
 var done = function(err, stdout, stderr) {
 
-	if(err) { 
+	if(err) {
 
-		return error(err); 
+		return error(err);
 	}
 
-	console.log("Interface wlan0 up.");
+	console.log("Interface up.");
 	process.send({ 'action' : 'ifaceUp', 'data' : true });
 };
 
