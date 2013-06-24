@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "description": "Ninja Blocks WiFi Utility",
   "main": "index.js",
+  "scripts": {
     "start": "./index.js"
   },
   "bin": {
     "block-wifi": "./index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/ninjablocks/wifi.git"
