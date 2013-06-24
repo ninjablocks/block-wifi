@@ -78,6 +78,10 @@ var monitor = function monitor() {
 		.on('exit', monitor)
 		.send({ action : "init" })
 	;
+	// kill child if parent dies
+	process.once('exit', function() {
+		monitor.process.kill()
+	})
 };
 
 /**
