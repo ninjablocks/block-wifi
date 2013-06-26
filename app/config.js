@@ -9,12 +9,7 @@ var
 ;
 
 module.exports = function(app) {
-	
-	var 
-		mids = middleware.call(this, app)
-		, rand = crypto.randomBytes(7).toString('base64')
-	;	
-	
+
 	events.EventEmitter.call(app);
 	util.inherits(events.EventEmitter, app);
 
@@ -24,7 +19,7 @@ module.exports = function(app) {
 	app.use(express.methodOverride());
 	app.use(express.bodyParser());
 	app.use(express.favicon());
-	app.use(express.cookieParser(rand));
+	app.use(express.cookieParser(crypto.randomBytes(7).toString('base64')));
 	app.use(express.cookieSession());	
 	
 	/**
