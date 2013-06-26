@@ -6,9 +6,8 @@ var
 	, state
 ;
 
-module.exports = function(app) {
+module.exports = function(wifi, app) {
 
-	var wifi = this;
 	/**
 	 * When device comes up, try to bring the
 	 * interface up as well
