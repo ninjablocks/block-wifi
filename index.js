@@ -133,4 +133,6 @@ creds.call(this, {
 
 config.call(this, app).listen(port);
 
-monitor();
+app.once('platformOK', function() {
+  monitor();
+})
