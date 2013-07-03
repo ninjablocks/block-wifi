@@ -138,8 +138,6 @@ creds.call(this, {
 	serialFile : '/etc/opt/ninja/serial.conf'
 });
 
-config.call(this, app).listen(port);
-
 app.once('platformOK', function() {
   app.log.log('platform ok, starting monitoring')
   monitor();
