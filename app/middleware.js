@@ -164,7 +164,6 @@ module.exports = function(wifi, app) {
 	mids.ready = [ 
 
 		mids.hasSerial
-		, mids.userAuth
 		, mids.hasDevice
 		, mids.hasIface 
 		, mids.notCycling
@@ -173,7 +172,6 @@ module.exports = function(wifi, app) {
 	mids.online = [ 
 
 		mids.hasSerial
-		, mids.userAuth
 		, mids.hasDevice
 		, mids.hasIface
 		, mids.isConnected 

@@ -88,12 +88,19 @@ var monitor = function monitor() {
  * Messages _to_ the monitor process
  */
 app.send = function send(action, data) {
+	if (!monitor.process) {
+		// enqueue message
+		app.once('monitor', function() {
+			deliver()
+		})
+	} else deliver()
 
-	monitor.process.send({ 
-
-		'action' : action
-		, 'data' : data || null 
-	});
+	function deliver() {
+		monitor.process.send({ 
+			'action' : action
+			, 'data' : data || null 
+		});
+	}
 };
 
 /**
@@ -134,5 +141,8 @@ creds.call(this, {
 config.call(this, app).listen(port);
 
 app.once('platformOK', function() {
+  app.log.log('platform ok, starting monitoring')
   monitor();
 })
+
+config.call(this, app).listen(port);

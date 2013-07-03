@@ -29,7 +29,7 @@ module.exports = function(app) {
 			var err = new Error('Wifi Setup is not implemented on this platform.')
 			return next(err)
 		}
-		app.emit('platformOk', true);
+		app.emit('platformOK', true);
 		next()
 	})
 
@@ -49,7 +49,8 @@ module.exports = function(app) {
 
 	route(app, middleware(this, app));
 	app.use(function(err, req, res, next) {
-		if (!err) return next()
+		if (!err) return next();
+		console.error(err, err.stack)			
 		res.status(500);
 		res.render('error', {
 			title: 'Sorry',

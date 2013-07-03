@@ -9,7 +9,6 @@ var
 		, plugin : require('./get-plugin')
 		, serial : require('./get-serial')
 		, index : require('./get-index')
-		, auth : require('./get-auth')
 	}
 	, router = function(app, mids) {
 
