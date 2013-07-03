@@ -10,7 +10,7 @@
 
 		app.get('/connected', function(req, res, next) {
 
-			console.log("Rendering connected screen.");
+			app.log.info("Rendering connected screen.");
 			res.render('connected');
 			setTimeout(reset, 5000);
 		});

@@ -14,7 +14,7 @@
 		app.get('/networks', function(req, res, next) {
 
 			app.send('wifiScan', true);
-			console.log("Client requested network list...");
+			app.log.info("Client requested network list...");
 			console.log(cells);
 			setTimeout(function() {
 

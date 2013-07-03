@@ -1,27 +1,24 @@
-;(function() {
+var 
+	routes = {
+
+		connected : require('./get-connected')
+		, networks : require('./xhr-networks')
+		, connect : require('./post-connect')
+		, device : require('./xhr-device')
+		, status : require('./get-status')
+		, plugin : require('./get-plugin')
+		, serial : require('./get-serial')
+		, index : require('./get-index')
+	}
+	, router = function(app, mids) {
+
+		Object.keys(routes).forEach(function(route) {
 	
-	var 
-		routes = {
+			module.exports[route] = routes[route](app, mids);
+		});
 
-			connected : require('./get-connected')
-			, networks : require('./xhr-networks')
-			, connect : require('./post-connect')
-			, device : require('./xhr-device')
-			, status : require('./get-status')
-			, plugin : require('./get-plugin')
-			, index : require('./get-index')
-		}
-		, router = function(app, mids) {
+		return app;	
+	}
+;
 
-			Object.keys(routes).forEach(function(route) {
-		
-				module.exports[route] = routes[route](app, mids);
-			});
-
-			return app;	
-		}
-	;
-
-	module.exports = router;
-
-})();
+module.exports = router;

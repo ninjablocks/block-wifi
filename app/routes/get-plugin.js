@@ -4,7 +4,7 @@
 
 		app.get('/plugin', function(req, res, next) {
 
-			console.log("Rendering plugin screen.");
+			app.log.info("Rendering plugin screen.");
 			res.render("plugin");
 		});
 	};

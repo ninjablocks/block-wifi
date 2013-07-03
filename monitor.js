@@ -1,6 +1,6 @@
 var 
 	exec = require('child_process').exec
-	, opts = { timout : 10000 }
+	, opts = { timeout : 10000 }
 	, actions = {
 
 		"wifiScan" : require('./bin/wifi_scan')

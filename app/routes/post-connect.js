@@ -33,7 +33,7 @@
 
 			if(params.ssid && params.ssid.length > 0) { // non-broadcast
 
-				console.log("Client submitting non-broadcast network...");
+				app.log.info("Client submitting non-broadcast network...");
 				if(!params.security) {
 
 					return error(res, "Invalid parameters");
@@ -60,7 +60,7 @@
 
 				var record = cells[params.network] || undefined;
 
-				console.log("Client submitting pre-scanned network...");
+				app.log.info("Client submitting pre-scanned network...");
 				if(!record) { return error(res, "Network not found"); }
 
 				if(params.password && record.encryption) {
@@ -79,14 +79,11 @@
 
 			delete params.network; 
 			
-			console.log(
+			app.log.info(
 
-				util.format(
-
-					"Requesting wpa_supplicant config for %s (%s)."
-					, params.ssid || "Unknown Network"
-					, params.encType || "OPEN"
-				)
+				"Requesting wpa_supplicant config for %s (%s)."
+				, params.ssid || "Unknown Network"
+				, params.encType || "OPEN"
 			);
 			app.send("writeConfig", params);
 			res.json({ 'connected' : true });

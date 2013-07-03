@@ -6,7 +6,7 @@ var
 	, state
 ;
 
-module.exports = function(app) {
+module.exports = function(wifi, app) {
 
 	/**
 	 * When device comes up, try to bring the
@@ -124,6 +124,38 @@ module.exports = function(app) {
 			}
 			next();
 		}
+		, hasSerial : function(req, res, next) {
+
+			if(!wifi.serial) {
+
+				return res.redirect('/serial');
+			}
+			next();
+		}
+		, userAuth : function(req, res, next) {
+
+			if((req.session) && req.session.block) { // session already checked
+
+				if(req.session.block == wifi.serial) {
+					
+					wifi.log.debug("User has proper credentials in session");
+					return next();
+				}
+				wifi.log.info("User has invalid credential in session");
+			}
+			if((req.query) && req.query.block) { // check new session
+
+				if(req.query.block == wifi.serial) {
+
+					req.session.block = req.query.block;
+					wifi.log.info("User provided proper credentials");
+					return next();
+				}
+				wifi.log.info("User provided invalid credentials");
+			}
+			wifi.log.debug("Redirecting unauthed user to auth screen");
+			res.redirect('/auth');
+		}
 	};
 
 	/**
@@ -131,14 +163,16 @@ module.exports = function(app) {
 	 */
 	mids.ready = [ 
 
-		mids.hasDevice
+		mids.hasSerial
+		, mids.hasDevice
 		, mids.hasIface 
 		, mids.notCycling
 	];
 
 	mids.online = [ 
 
-		mids.hasDevice
+		mids.hasSerial
+		, mids.hasDevice
 		, mids.hasIface
 		, mids.isConnected 
 	];
