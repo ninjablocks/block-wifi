@@ -12,12 +12,13 @@
 
  ;(function() {
 	
-	var
-		argv = require('optimist').argv
-		, config = require('./app/config')
+	var	argv = require('optimist').argv;
+	
+	var	config = require('./app/config')
 		, fork = require('child_process').fork
 		, express = require('express')
 		, port = argv.port || 80
+		, confPath = argv.confPath || "/etc/wpa_supplicant.conf"
 		, path = require('path')
 		, util = require('util')
 		, app = express()
@@ -73,7 +74,7 @@
 
 	var monitor = function monitor() {
 
-		monitor.process = fork(path.resolve(__dirname, 'monitor'));
+		monitor.process = fork(path.resolve(__dirname, 'monitor'), [confPath]);
 		
 		monitor.process
 			.on('message', message)

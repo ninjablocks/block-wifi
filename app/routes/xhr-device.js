@@ -24,6 +24,8 @@
 
 		app.get('/device', function(req, res, next) {
 
+
+
 			if((calls += 2) <= 2) {
 
 				app.send('deviceCheck', true);
