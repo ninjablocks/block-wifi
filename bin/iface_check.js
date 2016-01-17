@@ -1,8 +1,12 @@
 var 
 	exec = require('child_process').exec
+	, os = require('os')
 	, parser = require(__dirname + '/../lib/iwconfig-parser')
 	, data = {}
 	, opts = { timeout : 100000 }
+	, wlan = Object.keys(os.networkInterfaces()).filter(function(el) {
+		return el.indexOf("wlan") >= 0; 
+		})[0] || "wlan0"
 ;
 
 /**
@@ -51,7 +55,7 @@ function parse(line, index, list) {
 module.exports = function() { 
 
 	data = {};
-	console.log("Checking interface...");
-	exec('iwconfig wlan0', opts, read);
+	console.log("Checking interface "+wlan+"...");
+	exec('iwconfig '+wlan, opts, read);
 
 };
