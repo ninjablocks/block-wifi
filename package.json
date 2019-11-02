@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "optimist": "~0.3.4",
-    "express": "~3.0.0rc4",
+    "express": "~4.17.1",
     "ejs": "~0.8.3"
   }
 }
